@@ -1,8 +1,8 @@
-Consistent Hashing ex-3 
+Consistent Hashing ex-3 </b>
 main.py output:
 
-Load Metrics without Virtual Copies:
-Median Load: 68.5
+Load Metrics without Virtual Copies: </b>
+Median Load: 68.5</b>
 Average Load: 100.0
 Minimum Load: 2
 Maximum Load: 484
