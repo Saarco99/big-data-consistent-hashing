@@ -88,14 +88,31 @@ def calculate_load_metrics(load_values):
     percentile_75 = np.percentile(load_values, 75)
     return median_load, average_load, min_load, max_load, percentile_25, percentile_75
 
+def plot_load(load_values_without, load_values_with, title):
+    metrics = ['Median', 'Average', 'Minimum', 'Maximum', '25th Percentile', '75th Percentile']
+    ind = np.arange(len(metrics))  # the x locations for the groups
+    width = 0.35  # the width of the bars
 
-def plot_load_distribution(load_values, title):
-    plt.hist(load_values, bins=10, edgecolor='black')
-    plt.title(title)
-    plt.xlabel('Load')
-    plt.ylabel('Frequency')
-    plt.grid(True)
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(ind - width/2, load_values_without, width, label='Without Virtual Copies')
+    rects2 = ax.bar(ind + width/2, load_values_with, width, label='With Virtual Copies')
+
+    ax.set_xlabel('Median----------Average----------Minimum----------Maximum----------25th Percentile----------75th Percentile')
+    ax.set_ylabel('Values')
+    ax.set_title(title)
+    ax.set_xticks(ind)
+    ax.set_xticklabels(metrics)
+
+    ax.set_xticks(ind)
+    ax.set_xticklabels(metrics)
+
+    ax.legend()
+
     plt.show()
+
+
+
+
 
 
 def main():
@@ -109,14 +126,13 @@ def main():
     metrics_without_virtual_copies = calculate_load_metrics(server_loads)
     print("Load Metrics without Virtual Copies:")
     show_servers_load(metrics_without_virtual_copies)
-    plot_load_distribution(server_loads, "Load Distribution without Virtual Copies")
 
     # Simulate consistent hashing with virtual copies
     server_loads_with_virtual_copies = virtual_env.simulate_consistent_hashing_with_virtual_copies()
     metrics_with_virtual_copies = calculate_load_metrics(server_loads_with_virtual_copies)
     print("\nLoad Metrics with Virtual Copies:")
     show_servers_load(metrics_with_virtual_copies)
-    plot_load_distribution(server_loads_with_virtual_copies, "Load Distribution with Virtual Copies")
+    plot_load(metrics_without_virtual_copies,metrics_with_virtual_copies, "Load Distribution Difference:")
 
 
 def show_servers_load(metrics):
